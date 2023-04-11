@@ -4,7 +4,9 @@
 	"description": "카카오맵 지도 검색",
 	"main": "index.js",
 	"scripts": {
-		"start": "NODE_ENV=development webpack serve --config ./scripts/webpack.config.js --progress --mode development"
+		"start": "NODE_ENV=development webpack serve --config ./scripts/webpack.config.js --progress --mode development",
+		"tsc": "tsc",
+		"build": "NODE_ENV=production webpack --config ./scripts/webpack.config.js --progress --mode production"
 	},
 	"author": "Eunjeong Kim",
 	"license": "ISC",
@@ -16,11 +18,16 @@
 		"@babel/core": "^7.21.4",
 		"@babel/preset-env": "^7.21.4",
 		"@babel/preset-react": "^7.18.6",
+		"@babel/preset-typescript": "^7.21.4",
+		"@types/node": "^18.15.11",
+		"@types/react": "^18.0.34",
+		"@types/react-dom": "^18.0.11",
 		"babel-loader": "^9.1.2",
 		"css-loader": "^6.7.3",
 		"html-webpack-plugin": "^5.5.0",
 		"mini-css-extract-plugin": "^2.7.5",
 		"style-loader": "^3.3.2",
+		"typescript": "^5.0.4",
 		"webpack": "^5.78.0",
 		"webpack-cli": "^5.0.1",
 		"webpack-dev-server": "^4.13.2"

@@ -6,9 +6,9 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const isProduction = process.env.NODE_ENV === "production";
 
 module.exports = {
-	entry: "./src/index.jsx",
+	entry: "./src/index.tsx",
 	resolve: {
-		extensions: [".js", ".jsx"],
+		extensions: [".ts", ".tsx", ".js", ".jsx"],
 	},
 	output: {
 		path: path.resolve(__dirname, "../build"),
@@ -17,7 +17,7 @@ module.exports = {
 	},
 	devtool: isProduction ? false : "eval-source-map",
 	devServer: {
-		port: 3005,
+		port: 3002,
 		hot: true,
 		open: true,
 		client: {
@@ -30,7 +30,7 @@ module.exports = {
 			{
 				oneOf: [
 					{
-						test: /\.(js|jsx)$/,
+						test: /\.(ts|tsx)$/,
 						exclude: /node_modules/,
 						use: {
 							loader: "babel-loader",
