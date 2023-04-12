@@ -13,6 +13,8 @@ const DynamicMap = (props: DynamicMapProps) => {
 	useEffect(() => {
 		if (!kakaoMapRef.current) return;
 
+		const { kakao } = window;
+
 		const targetPoint = new kakao.maps.LatLng(33.450701, 126.570667);
 		const options = {
 			center: targetPoint,
@@ -21,15 +23,19 @@ const DynamicMap = (props: DynamicMapProps) => {
 
 		setMap(new window.kakao.maps.Map(kakaoMapRef.current, options));
 	}, []);
+
 	// DynamicMap 하위 컴포넌트는 map 객체에 접근 가능
 	return (
 		<>
 			<Container>
 				<Map ref={kakaoMapRef} />
 			</Container>
-			{map ? (
-				<KakaoMapContext.Provider value={map}>{props.children}</KakaoMapContext.Provider>
-			) : (
+			{map 
+			? (
+				<KakaoMapContext.Provider value={map}>
+					{props.children}
+					</KakaoMapContext.Provider>) 
+			: (
 				<div>지도 정보를 가져오지 못했습니다</div>
 			)}
 		</>

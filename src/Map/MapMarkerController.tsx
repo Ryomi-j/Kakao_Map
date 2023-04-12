@@ -14,7 +14,9 @@ const MapMarkerController = (props: MapMarkerControllerProps) => {
 	useEffect(() => {
 		if (props.places.length < 1) return;
 
-		const bounds = new window.kakao.maps.LatLngBounds();
+        const { kakao } = window;
+		const bounds = new kakao.maps.LatLngBounds();
+        
 		props.places.forEach((place) => {
 			bounds.extend(place.position);
 		});

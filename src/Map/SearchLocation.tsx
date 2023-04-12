@@ -5,7 +5,7 @@ import { PlaceType } from "./mapTypes";
 
 interface SearchLocationProps {
 	onUpdatePlaces: (places: PlaceType[]) => void;
-	onSelect: (placeId:string) => void
+	onSelectMarker: (placeId:string) => void
 }
 
 const SearchLocation = (props: SearchLocationProps) => {
@@ -23,10 +23,7 @@ const SearchLocation = (props: SearchLocationProps) => {
 	}, []);
 
 	const searchPlaces = (keyword: string) => {
-		if (!placeService.current) {
-			alert("placeService 에러");
-			return;
-		}
+		if (!placeService.current) return;
 
 		if (!keyword.replace(/^\s+|\s+$/g, "")) {
 			alert("키워드를 입력해주세요!");
@@ -34,6 +31,8 @@ const SearchLocation = (props: SearchLocationProps) => {
 		}
 
 		placeService.current.keywordSearch(keyword, (data, status) => {
+			const { kakao } = window;
+			
 			if (status === kakao.maps.services.Status.OK) {
 				const placeInfos = data.map((placeSearchResultItem) => {
 					return {
@@ -66,7 +65,7 @@ const SearchLocation = (props: SearchLocationProps) => {
 	const handleItemClick = (place: PlaceType) => {
 		map.setCenter(place.position);
 		map.setLevel(4);
-		props.onSelect(place.id)
+		props.onSelectMarker(place.id)
 	};
 
 	return (

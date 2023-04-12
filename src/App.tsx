@@ -14,7 +14,7 @@ const App = () => {
 				<DynamicMap>
 					<MapMarkerController places={places} selectedPlaceId={selectedPlaceId}/>
 					<SearchLocation
-						onSelect={(placeId) => {
+						onSelectMarker={(placeId) => {
 							setSelectedPlaceId(placeId)
 						}}
 						onUpdatePlaces={(places) => {

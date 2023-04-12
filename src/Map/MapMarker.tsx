@@ -42,6 +42,16 @@ const MapMarker = (props: MapMarkerProps) => {
 			image: markerImage,
 		});
 
+		marker.setMap(map)
+
+		kakao.maps.event.addListener(marker, "click", function () {
+			map.setCenter(props.place.position);
+			map.setLevel(1, {
+				animate: true, // 부드럽게 이동
+			});
+			infoWindow.setMap(map);
+		});
+
 		return marker;
 	}, []);
 
@@ -67,12 +77,10 @@ const MapMarker = (props: MapMarkerProps) => {
 	// createPortal(a, b) : a를 b안에 넣어줌
 	return container.current
 		? ReactDOM.createPortal(
-				<Message>
+				<Message onClick={() => { infoWindow.setMap(null);}}>
 					<Title>{props.place.title}</Title>
 					<Address>{props.place.address}</Address>
-				</Message>,
-				container.current
-		  )
+				</Message>, container.current )
 		: null;
 };
 
