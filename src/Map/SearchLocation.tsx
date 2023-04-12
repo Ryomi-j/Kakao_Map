@@ -1,10 +1,18 @@
 import styled from "@emotion/styled";
+import { FormEvent, useState } from "react";
 
 const SearchLocation = () => {
+	const [keyword, setKeyword] = useState('');
+
+	const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+	}
 	return (
 		<Container>
-			<Form>
-				<Input value={""} onChange={() => {}} />
+			<Form onSubmit={handleSubmit}>
+				<Input value={keyword} onChange={(e) => {
+					setKeyword(e.target.value)
+				}} />
 			</Form>
 			<List>
 				{Array.from({ length: 50 }).map((item, idx) => {
