@@ -23,8 +23,9 @@ const MapMarkerController = (props: MapMarkerControllerProps) => {
 
 	return (
 		<>
-			{props.places.map((place) => {
+			{props.places.map((place, index) => {
 				return <MapMarker key={place.id} 
+                                  index={index}
                                   place={place} 
                                   showInfo={props.selectedPlaceId === place.id} />;
 			})}
