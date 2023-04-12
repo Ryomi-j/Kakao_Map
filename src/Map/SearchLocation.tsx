@@ -5,6 +5,7 @@ import { PlaceType } from "./mapTypes";
 
 interface SearchLocationProps {
 	onUpdatePlaces: (places: PlaceType[]) => void;
+	onSelect: (placeId:string) => void
 }
 
 const SearchLocation = (props: SearchLocationProps) => {
@@ -45,7 +46,7 @@ const SearchLocation = (props: SearchLocationProps) => {
 
 				// 상위 컴포넌트에 전달하는 함수
 				props.onUpdatePlaces(placeInfos);
-				
+
 				setPlaces(placeInfos);
 			} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 				alert("검색 결과가 존재하지 않습니다.");
@@ -65,6 +66,7 @@ const SearchLocation = (props: SearchLocationProps) => {
 	const handleItemClick = (place: PlaceType) => {
 		map.setCenter(place.position);
 		map.setLevel(4);
+		props.onSelect(place.id)
 	};
 
 	return (

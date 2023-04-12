@@ -1,9 +1,10 @@
-import { useLayoutEffect, useMemo } from "react";
+import { useEffect, useLayoutEffect, useMemo } from "react";
 import { PlaceType } from "./mapTypes";
 import { useMap } from "../hooks/useMap";
 
 interface MapMarkerProps {
 	place: PlaceType;
+	showInfo?: boolean
 }
 
 const MapMarker = (props: MapMarkerProps) => {
@@ -24,6 +25,10 @@ const MapMarker = (props: MapMarkerProps) => {
 			marker.setMap(null);
 		};
 	}, [map]);
+
+	useEffect(() => {
+		
+	}, [props.showInfo])
 
 	return <></>;
 };
