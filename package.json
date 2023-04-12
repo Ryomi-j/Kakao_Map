@@ -11,6 +11,8 @@
 	"author": "Eunjeong Kim",
 	"license": "ISC",
 	"dependencies": {
+		"@emotion/react": "^11.10.6",
+		"@emotion/styled": "^11.10.6",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
