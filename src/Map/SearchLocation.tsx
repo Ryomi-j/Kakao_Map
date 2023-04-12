@@ -1,16 +1,14 @@
 import styled from "@emotion/styled";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useMap } from "../hooks/useMap";
+import { PlaceType } from "./mapTypes";
 
-interface PlaceType {
-	id: string;
-	position: kakao.maps.LatLng;
-	title: string;
-	address: string;
+interface SearchLocationProps {
+	onUpdatePlaces: (places: PlaceType[]) => void;
 }
 
-const SearchLocation = () => {
-	const map = useMap()
+const SearchLocation = (props: SearchLocationProps) => {
+	const map = useMap();
 	const [keyword, setKeyword] = useState("");
 	const [places, setPlaces] = useState<PlaceType[]>([]);
 
@@ -20,25 +18,22 @@ const SearchLocation = () => {
 	useEffect(() => {
 		if (placeService.current) return;
 
-		placeService.current = new kakao.maps.services.Places(); 
+		placeService.current = new kakao.maps.services.Places();
 	}, []);
 
 	const searchPlaces = (keyword: string) => {
-		
 		if (!placeService.current) {
-			alert('placeService 에러')
-			return
+			alert("placeService 에러");
+			return;
 		}
 
 		if (!keyword.replace(/^\s+|\s+$/g, "")) {
 			alert("키워드를 입력해주세요!");
 			return;
 		}
-		
-		console.log(keyword);
+
 		placeService.current.keywordSearch(keyword, (data, status) => {
 			if (status === kakao.maps.services.Status.OK) {
-
 				const placeInfos = data.map((placeSearchResultItem) => {
 					return {
 						id: placeSearchResultItem.id,
@@ -47,6 +42,10 @@ const SearchLocation = () => {
 						address: placeSearchResultItem.address_name,
 					};
 				});
+
+				// 상위 컴포넌트에 전달하는 함수
+				props.onUpdatePlaces(placeInfos);
+				
 				setPlaces(placeInfos);
 			} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
 				alert("검색 결과가 존재하지 않습니다.");
@@ -63,10 +62,10 @@ const SearchLocation = () => {
 		searchPlaces(keyword);
 	};
 
-	const handleItemClick = (place:PlaceType) => {
+	const handleItemClick = (place: PlaceType) => {
 		map.setCenter(place.position);
-		map.setLevel(4)
-	}
+		map.setLevel(4);
+	};
 
 	return (
 		<Container>
