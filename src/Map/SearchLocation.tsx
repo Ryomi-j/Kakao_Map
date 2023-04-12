@@ -1,22 +1,90 @@
 import styled from "@emotion/styled";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+
+interface PlaceType {
+	id: string;
+	position: kakao.maps.LatLng;
+	title: string;
+	address: string;
+}
 
 const SearchLocation = () => {
-	const [keyword, setKeyword] = useState('');
+	const [keyword, setKeyword] = useState("");
+	const [places, setPlaces] = useState<PlaceType[]>([]);
 
-	const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
+	// 장소 검색 객체를 생성 : var ps = new kakao.maps.services.Places();
+	const placeService = useRef<kakao.maps.services.Places | null>(null);
+
+	useEffect(() => {
+		if (placeService.current) return;
+
+		placeService.current = new kakao.maps.services.Places(); 
+		console.log(placeService)
+	}, []);
+
+	const searchPlaces = (keyword: string) => {
+		
+		if (!placeService.current) {
+			alert('placeService 에러')
+			return
+		}
+
+		if (!keyword.replace(/^\s+|\s+$/g, "")) {
+			alert("키워드를 입력해주세요!");
+			return;
+		}
+		
+		console.log(keyword);
+		placeService.current.keywordSearch(keyword, (data, status) => {
+			if (status === kakao.maps.services.Status.OK) {
+				console.log(data);
+
+				const placeInfos = data.map((placeSearchResultItem) => {
+					return {
+						id: placeSearchResultItem.id,
+						position: new kakao.maps.LatLng(Number(placeSearchResultItem.y), Number(placeSearchResultItem.x)),
+						title: placeSearchResultItem.place_name,
+						address: placeSearchResultItem.address_name,
+					};
+				});
+				setPlaces(placeInfos);
+			} else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+				alert("검색 결과가 존재하지 않습니다.");
+				return;
+			} else if (status === kakao.maps.services.Status.ERROR) {
+				alert("검색 결과 중 오류가 발생했습니다.");
+				return;
+			}
+		});
+	};
+
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		searchPlaces(keyword);
+	};
+
+	const handleItemClick = (place:PlaceType) => {
+	
 	}
+
 	return (
 		<Container>
 			<Form onSubmit={handleSubmit}>
-				<Input value={keyword} onChange={(e) => {
-					setKeyword(e.target.value)
-				}} />
+				<Input
+					value={keyword}
+					onChange={(e) => {
+						setKeyword(e.target.value);
+					}}
+				/>
 			</Form>
 			<List>
-				{Array.from({ length: 50 }).map((item, idx) => {
-					return <Item key={idx}>지역</Item>;
+				{places.map((item, idx) => {
+					return (
+						<Item key={item.id} onClick={() => handleItemClick(item)}>
+							<label>{`${idx + 1}. ${item.title}`}</label>
+							<span>{item.address}</span>
+						</Item>
+					);
 				})}
 			</List>
 		</Container>
@@ -56,7 +124,7 @@ const Item = styled.li`
 	flex-direction: column;
 	padding: 8px;
 	border-bottom: 1px dashed #d2d2d2;
-    cursor: pointer;
+	cursor: pointer;
 
 	&:hover {
 		background-color: #d2d2d2;
