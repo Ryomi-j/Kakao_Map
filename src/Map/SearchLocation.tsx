@@ -65,7 +65,7 @@ const SearchLocation = (props: SearchLocationProps) => {
 
 	const handleItemClick = (place: PlaceType) => {
 		map.setCenter(place.position);
-		map.setLevel(1);
+		map.setLevel(4);
 		props.onSelect(place.id)
 	};
 
