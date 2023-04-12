@@ -17,7 +17,7 @@ module.exports = {
 	},
 	devtool: isProduction ? false : "eval-source-map",
 	devServer: {
-		port: 3002,
+		port: 3000,
 		hot: true,
 		open: true,
 		client: {

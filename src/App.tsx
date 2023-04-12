@@ -2,8 +2,9 @@ import KakaoMapScriptLoader from "./Map/KakaoMapScriptLoader";
 
 const App = () => {
 	return <>
-	<KakaoMapScriptLoader />
-	<div className="app">Hello React!</div>
+	<KakaoMapScriptLoader>
+		지도가 생성되었습니다.
+	</KakaoMapScriptLoader>
 	</>;
 };
 
