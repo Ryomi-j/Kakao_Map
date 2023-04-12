@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { useMap } from "../hooks/useMap";
 
 interface PlaceType {
 	id: string;
@@ -9,6 +10,7 @@ interface PlaceType {
 }
 
 const SearchLocation = () => {
+	const map = useMap()
 	const [keyword, setKeyword] = useState("");
 	const [places, setPlaces] = useState<PlaceType[]>([]);
 
@@ -19,7 +21,6 @@ const SearchLocation = () => {
 		if (placeService.current) return;
 
 		placeService.current = new kakao.maps.services.Places(); 
-		console.log(placeService)
 	}, []);
 
 	const searchPlaces = (keyword: string) => {
@@ -37,7 +38,6 @@ const SearchLocation = () => {
 		console.log(keyword);
 		placeService.current.keywordSearch(keyword, (data, status) => {
 			if (status === kakao.maps.services.Status.OK) {
-				console.log(data);
 
 				const placeInfos = data.map((placeSearchResultItem) => {
 					return {
@@ -64,7 +64,8 @@ const SearchLocation = () => {
 	};
 
 	const handleItemClick = (place:PlaceType) => {
-	
+		map.setCenter(place.position);
+		map.setLevel(4)
 	}
 
 	return (

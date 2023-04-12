@@ -6,8 +6,9 @@ const App = () => {
 	return (
 		<>
 			<KakaoMapScriptLoader>
-				<DynamicMap />
-				<SearchLocation />
+				<DynamicMap>
+					<SearchLocation />
+				</DynamicMap>
 			</KakaoMapScriptLoader>
 		</>
 	);
